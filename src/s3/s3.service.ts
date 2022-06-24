@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { S3Repository } from './s3.repository';
+import { UploadFileDto } from './dto/upload-file.dto';
 
 @Injectable()
 export class S3Service {
