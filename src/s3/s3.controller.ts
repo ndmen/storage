@@ -14,7 +14,7 @@ export class S3Controller {
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: string) {
+  async findOne(@Param('id') id: number) {
     return this.s3Service.findOne(id);
   }
 }

@@ -6,5 +6,5 @@ export class S3 {
   id: number;
 
   @Column()
-  path: string;
+  file: string;
 }
