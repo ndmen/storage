@@ -12,6 +12,7 @@ export class S3Service {
   ) {}
   async create(uploadFileDto: UploadFileDto) {
     const createOne = await this.s3Repository.create(uploadFileDto);
+    await this.s3Repository.save(createOne);
     return createOne;
   }
 

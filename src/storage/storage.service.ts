@@ -12,6 +12,7 @@ export class StorageService {
   ) {}
   async create(uploadFileDto: UploadFileDto) {
     const createOne = await this.storageRepository.create(uploadFileDto);
+    await this.storageRepository.save(createOne);
     return createOne;
   }
 
