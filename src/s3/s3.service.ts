@@ -16,7 +16,9 @@ export class S3Service {
   }
 
   async findOne(id: number) {
-    const findOne = await this.s3Repository.findOne(id);
+    const findOne = await this.s3Repository.findOne({
+      where: { id: id },
+    });
     return findOne;
   }
 }
