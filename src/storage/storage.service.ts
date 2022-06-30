@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { UploadFileDto } from './dto/upload-file.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
@@ -12,6 +12,7 @@ export class StorageService {
   ) {}
   async create(file: any) {
     const createOne = await this.storageRepository.create({
+      path: file.path,
       originalname: file.originalname,
       mimetype: file.mimetype,
     });
@@ -23,6 +24,9 @@ export class StorageService {
     const findOne = await this.storageRepository.findOne({
       where: { id: id },
     });
+    if (!findOne) {
+      throw new NotFoundException();
+    }
     return findOne;
   }
 }

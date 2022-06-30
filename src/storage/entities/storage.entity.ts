@@ -6,6 +6,9 @@ export class Storage {
   id: number;
 
   @Column()
+  path: string;
+
+  @Column()
   originalname: string;
 
   @Column()

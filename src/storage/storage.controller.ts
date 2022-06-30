@@ -4,12 +4,17 @@ import {
   Post,
   Body,
   Param,
+  Res,
   UploadedFile,
   UseInterceptors,
+  StreamableFile,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
 import { diskStorage } from 'multer';
+import { Response } from 'express';
+import { createReadStream } from 'fs';
+import { join } from 'path';
 import { StorageService } from './storage.service';
 import { UploadFileDto } from './dto/upload-file.dto';
 import { ApiTags } from '@nestjs/swagger';
@@ -30,13 +35,25 @@ export class StorageController {
   async create(@UploadedFile() file: Express.Multer.File) {
     console.log('file', file);
     return this.storageService.create({
+      path: file.path,
       originalname: file.originalname,
       mimetype: file.mimetype,
     });
   }
 
   @Get(':id')
-  async findOne(@Param('id') id: number) {
-    return this.storageService.findOne(id);
+  async findOne(
+    @Param('id') id: number,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    const file = await this.storageService.findOne(id);
+    const stream = createReadStream(join(process.cwd(), file.path));
+
+    response.set({
+      'Content-Disposition': `inline; filename="${file.originalname}"`,
+      'Content-Type': file.mimetype,
+    });
+    return new StreamableFile(stream);
+    // return this.storageService.findOne(id);
   }
 }
