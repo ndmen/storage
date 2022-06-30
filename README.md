@@ -24,7 +24,12 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+It is a storage on Nest.js(Passport(JWT+Local)) and Postgres(TypeORM). You can:
+1. Login, Register
+2. Create, read files from local storage.
+3. Create, read files from AWS S3.
+
+See OpenAPI(Swagger) http://localhost:3000/api/#/
 
 ## Installation
 
