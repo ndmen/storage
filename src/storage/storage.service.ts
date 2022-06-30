@@ -10,8 +10,11 @@ export class StorageService {
     @InjectRepository(Storage)
     private storageRepository: Repository<Storage>,
   ) {}
-  async create(uploadFileDto: UploadFileDto) {
-    const createOne = await this.storageRepository.create(uploadFileDto);
+  async create(file: any) {
+    const createOne = await this.storageRepository.create({
+      originalname: file.originalname,
+      mimetype: file.mimetype,
+    });
     await this.storageRepository.save(createOne);
     return createOne;
   }

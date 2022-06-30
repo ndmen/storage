@@ -6,5 +6,8 @@ export class Storage {
   id: number;
 
   @Column()
-  file: string;
+  originalname: string;
+
+  @Column()
+  mimetype: string;
 }
