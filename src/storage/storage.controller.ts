@@ -2,7 +2,6 @@ import {
   Controller,
   Get,
   Post,
-  Body,
   Param,
   Res,
   UploadedFile,
@@ -16,7 +15,6 @@ import { Response } from 'express';
 import { createReadStream } from 'fs';
 import { join } from 'path';
 import { StorageService } from './storage.service';
-import { UploadFileDto } from './dto/upload-file.dto';
 import { ApiTags } from '@nestjs/swagger';
 
 @ApiTags('storage')
@@ -48,7 +46,6 @@ export class StorageController {
   ) {
     const file = await this.storageService.findOne(id);
     const stream = createReadStream(join(process.cwd(), file.path));
-
     response.set({
       'Content-Disposition': `inline; filename="${file.originalname}"`,
       'Content-Type': file.mimetype,
