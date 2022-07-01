@@ -17,8 +17,8 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(username, password): Promise<any> {
-    const user = await this.usersService.findOne(username);
+  async validateUser(email, password): Promise<any> {
+    const user = await this.usersService.findOne(email);
     if (!user) {
       throw new NotFoundException('User not found');
     }
@@ -31,14 +31,14 @@ export class AuthService {
 
   async login(loginUserDto: LoginUserDto) {
     const user = await this.validateUser(
-      loginUserDto.username,
+      loginUserDto.email,
       loginUserDto.password,
     );
 
     if (user) {
       const payload = {
-        username: user.username,
-        sub: user._id,
+        email: user.email,
+        sub: user.id,
       };
       return {
         access_token: this.jwtService.sign(payload),
@@ -47,10 +47,10 @@ export class AuthService {
   }
 
   async register(registerUserDto: RegisterUserDto) {
-    const user = await this.usersService.findOne(registerUserDto.username);
+    const user = await this.usersService.findOne(registerUserDto.email);
     if (user) {
       throw new HttpException(
-        'User with this username exist',
+        'User with this email exist',
         HttpStatus.BAD_REQUEST,
       );
     }
@@ -62,8 +62,8 @@ export class AuthService {
     });
     if (createOne) {
       const payload = {
-        username: createOne.username,
-        sub: createOne._id,
+        email: createOne.email,
+        sub: createOne.id,
       };
       return {
         access_token: this.jwtService.sign(payload),

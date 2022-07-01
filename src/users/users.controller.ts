@@ -8,7 +8,7 @@ export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
   @Get(':id')
-  async findOneById(@Param('id') id: string) {
+  async findOneById(@Param('id') id: number) {
     return this.usersService.findOneById(id);
   }
 }

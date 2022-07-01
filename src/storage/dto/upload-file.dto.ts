@@ -4,5 +4,5 @@ import { ApiProperty } from '@nestjs/swagger';
 export class UploadFileDto {
   @ApiProperty()
   @IsString()
-  name: string;
+  user_id: string;
 }

@@ -1,5 +1,4 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { UploadFileDto } from './dto/upload-file.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Storage } from './entities/storage.entity';
@@ -12,6 +11,7 @@ export class StorageService {
   ) {}
   async create(file: any) {
     const createOne = await this.storageRepository.create({
+      user_id: file.user_id,
       path: file.path,
       originalname: file.originalname,
       mimetype: file.mimetype,

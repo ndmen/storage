@@ -3,10 +3,12 @@ import {
   Get,
   Post,
   Param,
+  Body,
   Res,
   UploadedFile,
   UseInterceptors,
   StreamableFile,
+  UseGuards,
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Express } from 'express';
@@ -16,6 +18,8 @@ import { createReadStream } from 'fs';
 import { join } from 'path';
 import { StorageService } from './storage.service';
 import { ApiTags } from '@nestjs/swagger';
+import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
+import { UploadFileDto } from './dto/upload-file.dto';
 
 @ApiTags('storage')
 @Controller('storage')
@@ -29,10 +33,15 @@ export class StorageController {
       }),
     }),
   )
+  @UseGuards(JwtAuthGuard)
   @Post()
-  async create(@UploadedFile() file: Express.Multer.File) {
+  async create(
+    @Body() uploadFileDto: UploadFileDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
     console.log('file', file);
     return this.storageService.create({
+      user_id: uploadFileDto.user_id,
       path: file.path,
       originalname: file.originalname,
       mimetype: file.mimetype,
