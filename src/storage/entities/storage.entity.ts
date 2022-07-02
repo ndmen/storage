@@ -12,9 +12,9 @@ export class Storage {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @JoinColumn({ name: 'id' })
   @ManyToOne(() => User)
-  user_id: number;
+  @JoinColumn()
+  user_id: User;
 
   @Column()
   path: string;
